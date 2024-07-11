@@ -1,4 +1,4 @@
-import { NavLink } from "react-router-dom"
+import { Link, NavLink } from "react-router-dom"
 
 
 const Header = () => {
@@ -8,6 +8,7 @@ const Header = () => {
           <li><NavLink to="/register">Register</NavLink></li>
           <li><NavLink to="/heroRegister">Hero Register</NavLink></li>
      </>
+
 
      return (
           <div className="navbar bg-base-100 justify-around mt-4">
@@ -33,7 +34,10 @@ const Header = () => {
                               {navLink}
                          </ul>
                     </div>
-                    <a className="btn btn-ghost text-xl">Email Auth</a>
+                    <Link className="text-xl " to={'/'}>Email Auth
+
+                    </Link>
+
                </div>
                <div className="navbar-center hidden lg:flex">
                     <ul className="menu menu-horizontal px-1 text-base">
@@ -41,7 +45,7 @@ const Header = () => {
                     </ul>
                </div>
 
-          </div>
+          </div >
      );
 };
 
