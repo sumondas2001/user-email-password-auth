@@ -15,7 +15,6 @@ const Login = () => {
           e.preventDefault();
           const email = e.target.email.value;
           const password = e.target.password.value;
-          console.log(email, password)
           setLoginError('');
           setLoginSuccess('');
 
@@ -24,14 +23,19 @@ const Login = () => {
           signInWithEmailAndPassword(auth, email, password)
                .then(result => {
 
-                    setLoginSuccess('Login Successfully')
-                    e.target.email.value = '';
-                    e.target.password.value = '';
-                    console.log(result.user);
+                    const user = result.user;
+                    if (user.emailVerified) {
+                         setLoginSuccess('Login Successfully');
+                         e.target.email.value = '';
+                         e.target.password.value = '';
+                    } else {
+                         alert("Please verified your email address")
+                    }
+
+
                })
                .catch(error => {
                     const errorMessage = error.message;
-                    console.error(errorMessage);
                     setLoginError(errorMessage)
                })
 
@@ -56,6 +60,7 @@ const Login = () => {
                     const errorMessage = error.message;
                     setLoginSuccess(errorMessage)
                })
+
      }
 
      return (

@@ -1,7 +1,7 @@
-import { createUserWithEmailAndPassword, getAuth } from "firebase/auth";
+import { createUserWithEmailAndPassword, sendEmailVerification, updateProfile } from "firebase/auth";
 import auth from "../../firrebase/firebase.confige";
 
-import { useRef, useState } from "react";
+import { useState } from "react";
 import { IoEyeSharp } from "react-icons/io5";   //on
 import { FaEyeSlash } from "react-icons/fa";   //off
 import { Link } from "react-router-dom";
@@ -14,10 +14,11 @@ const Register = () => {
 
      const handelRegister = e => {
           e.preventDefault();
+          const name = e.target.name.value;
           const email = e.target.email.value;
           const password = e.target.password.value;
           const terms = e.target.terms.checked;
-          console.log(email, password, terms);
+          console.log(name, email, password, terms);
 
           setRegisterError('');
           setRegisterSuccess('');
@@ -41,16 +42,31 @@ const Register = () => {
           }
 
 
-          const auth2 = auth;
-          createUserWithEmailAndPassword(auth2, email, password)
-               .then(result => {
 
-                    console.log(result.user);
-                    setRegisterSuccess('User Created Successfully')
+          createUserWithEmailAndPassword(auth, email, password)
+               .then(result => {
+                    const user = result.user
+
+                    setRegisterSuccess('User Created Successfully');
+
+                    // update profile
+
+                    updateProfile(user, {
+                         displayName: name
+                    })
+                         .then()
+                         .catch()
+
+                    // email verification
+
+                    sendEmailVerification(user)
+                         .then(() => {
+                              alert("Please check your email and verify your account ")
+                         });
                })
                .catch(error => {
                     const errorMessage = error.message;
-                    console.error(errorMessage)
+
                     setRegisterError(errorMessage)
 
 
@@ -63,6 +79,13 @@ const Register = () => {
                <h2 className="text-3xl text-center m-10">Please Register Now</h2>
                <div className="flex justify-center ">
                     <form className="" onSubmit={handelRegister}>
+                         <input className="mb-4 w-96 px-4 py-2 rounded"
+                              type="text"
+                              name="name"
+                              placeholder="Your Name"
+                              required
+                         />
+                         <br />
                          <input className="mb-4 w-96 px-4 py-2 rounded"
                               type="email"
                               name="email"
