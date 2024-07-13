@@ -1,13 +1,15 @@
-import { signInWithEmailAndPassword } from "firebase/auth";
+import { sendPasswordResetEmail, signInWithEmailAndPassword } from "firebase/auth";
 import auth from "../../firrebase/firebase.confige";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { IoEyeSharp } from "react-icons/io5";   //on
 import { FaEyeSlash } from "react-icons/fa";   //off
+import { Link } from "react-router-dom";
 
 const Login = () => {
      const [loginError, setLoginError] = useState('');
      const [loginSuccess, setLoginSuccess] = useState('');
      const [showPassword, setShowPassword] = useState(false);
+     const emailRef = useRef(null)
      const handelLogin = (e) => {
 
           e.preventDefault();
@@ -21,16 +23,39 @@ const Login = () => {
 
           signInWithEmailAndPassword(auth, email, password)
                .then(result => {
-                    const user = result.user;
+
                     setLoginSuccess('Login Successfully')
-                    console.log(user)
+                    e.target.email.value = '';
+                    e.target.password.value = '';
+                    console.log(result.user);
                })
                .catch(error => {
                     const errorMessage = error.message;
-                    console.log(errorMessage);
+                    console.error(errorMessage);
                     setLoginError(errorMessage)
                })
 
+     }
+     const handelForgotPassword = () => {
+          const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+          const email = emailRef.current.value;
+          if (!email) {
+               setLoginError('please enter your email');
+               return;
+
+          }
+          else if (!emailRegex.test(email)) {
+               setLoginError('please write a valid email');
+               return;
+          }
+          sendPasswordResetEmail(auth, email)
+               .then(() => {
+                    alert(' Password reset email sent! ')
+               })
+               .catch(error => {
+                    const errorMessage = error.message;
+                    setLoginSuccess(errorMessage)
+               })
      }
 
      return (
@@ -53,7 +78,13 @@ const Login = () => {
                                    <label className="label">
                                         <span className="label-text">Email</span>
                                    </label>
-                                   <input type="email" placeholder="email" required name="email" className="input input-bordered" />
+                                   <input
+                                        type="email"
+                                        ref={emailRef}
+                                        placeholder="email"
+                                        required name="email"
+                                        className="input input-bordered"
+                                   />
                               </div>
                               <div className="form-control relative ">
                                    <label className="label">
@@ -61,12 +92,15 @@ const Login = () => {
                                    </label>
                                    <input type={showPassword ? "text" : "password"} placeholder="password" required name="password" className="input input-bordered" />
                                    <label className="label">
-                                        <a href="#" className="label-text-alt link link-hover">Forgot password?</a>
+                                        <a onClick={handelForgotPassword} href="#" className="label-text-alt link link-hover">Forgot password?</a>
+                                        <Link className="text-xs hover:underline " to={"/register"}> Register</Link>
                                    </label>
+
 
                                    <span className="absolute right-2 top-1/2 " onClick={() => setShowPassword(!showPassword)}>{showPassword ? <FaEyeSlash /> : <IoEyeSharp />}</span>
 
                               </div>
+
                               <div className="form-control mt-6">
                                    <button className="btn btn-primary">Login</button>
                               </div>

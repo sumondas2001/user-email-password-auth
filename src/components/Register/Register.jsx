@@ -1,15 +1,17 @@
 import { createUserWithEmailAndPassword, getAuth } from "firebase/auth";
 import auth from "../../firrebase/firebase.confige";
 
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { IoEyeSharp } from "react-icons/io5";   //on
 import { FaEyeSlash } from "react-icons/fa";   //off
+import { Link } from "react-router-dom";
 
 
 const Register = () => {
      const [registerError, setRegisterError] = useState('');
      const [registerSuccess, setRegisterSuccess] = useState('');
      const [showPassword, setShowPassword] = useState(false);
+
      const handelRegister = e => {
           e.preventDefault();
           const email = e.target.email.value;
@@ -61,7 +63,13 @@ const Register = () => {
                <h2 className="text-3xl text-center m-10">Please Register Now</h2>
                <div className="flex justify-center ">
                     <form className="" onSubmit={handelRegister}>
-                         <input className="mb-4 w-96 px-4 py-2 rounded" type="email" name="email" placeholder="Email Address" required /><br />
+                         <input className="mb-4 w-96 px-4 py-2 rounded"
+                              type="email"
+                              name="email"
+                              placeholder="Email Address"
+                              required
+                         />
+                         <br />
                          <div className="relative  mb-4">
                               <input className=" w-96 px-4 py-2 rounded  "
                                    type={showPassword ? 'text' : 'password'}
@@ -70,6 +78,11 @@ const Register = () => {
                                    placeholder="Password"
                                    required />
                               <span className="absolute top-3 right-2  " onClick={() => setShowPassword(!showPassword)}>{showPassword ? <FaEyeSlash /> : <IoEyeSharp />}</span>
+
+                         </div>
+                         <div>
+                              <p className="text-sm">Already havre a an account?</p>
+                              <Link className="text-xl text-red-400 hover:underline " to={"/login"}> Login</Link>
                          </div>
                          <br />
                          <div className="">
