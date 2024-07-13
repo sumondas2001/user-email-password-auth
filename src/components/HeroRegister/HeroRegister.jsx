@@ -69,7 +69,7 @@ const HeroRegister = () => {
                                    <input type="email" name="email"
                                         placeholder="email" className="input input-bordered" required />
                               </div>
-                              <div className="form-control relative">
+                              <div className="form-control relative ">
                                    <label className="label">
                                         <span className="label-text">Password</span>
                                    </label>

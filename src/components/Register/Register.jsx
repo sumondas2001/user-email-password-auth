@@ -13,8 +13,9 @@ const Register = () => {
      const handelRegister = e => {
           e.preventDefault();
           const email = e.target.email.value;
-          const password = e.target.password.value
-          console.log(email, password);
+          const password = e.target.password.value;
+          const terms = e.target.terms.checked;
+          console.log(email, password, terms);
 
           setRegisterError('');
           setRegisterSuccess('');
@@ -32,6 +33,11 @@ const Register = () => {
                setRegisterError('Your Password Should have be at least  one number');
                return;
           }
+          else if (!terms) {
+               setRegisterError('Plz Checked Terms And Conditions');
+               return
+          }
+
 
           const auth2 = auth;
           createUserWithEmailAndPassword(auth2, email, password)
@@ -56,14 +62,19 @@ const Register = () => {
                <div className="flex justify-center ">
                     <form className="" onSubmit={handelRegister}>
                          <input className="mb-4 w-96 px-4 py-2 rounded" type="email" name="email" placeholder="Email Address" required /><br />
-                         <div className="relative">
-                              <input className="mb-4 w-96 px-4 py-2 rounded  "
+                         <div className="relative  mb-4">
+                              <input className=" w-96 px-4 py-2 rounded  "
                                    type={showPassword ? 'text' : 'password'}
 
                                    name="password"
                                    placeholder="Password"
                                    required />
                               <span className="absolute top-3 right-2  " onClick={() => setShowPassword(!showPassword)}>{showPassword ? <FaEyeSlash /> : <IoEyeSharp />}</span>
+                         </div>
+                         <br />
+                         <div className="">
+                              <input className="mr-3" type="checkbox" name="terms" id="" />
+                              <label htmlFor="terms" >Accept Our Terms And Conditions</label>
                          </div>
                          <br />
                          <input className="mb-4 btn text-lg text-white btn-secondary w-96 px-4 py-2 rounded" type="submit" value="Register" />
