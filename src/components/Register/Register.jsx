@@ -18,7 +18,6 @@ const Register = () => {
           const email = e.target.email.value;
           const password = e.target.password.value;
           const terms = e.target.terms.checked;
-          console.log(name, email, password, terms);
 
           setRegisterError('');
           setRegisterSuccess('');
@@ -63,6 +62,9 @@ const Register = () => {
                          .then(() => {
                               alert("Please check your email and verify your account ")
                          });
+                    e.target.email.value = '';
+                    e.target.password.value = '';
+                    e.target.name.value = '';
                })
                .catch(error => {
                     const errorMessage = error.message;

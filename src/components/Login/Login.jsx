@@ -41,6 +41,8 @@ const Login = () => {
 
      }
      const handelForgotPassword = () => {
+          setLoginError('');
+          setLoginSuccess('')
           const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
           const email = emailRef.current.value;
           if (!email) {
